@@ -224,7 +224,7 @@ export default function LandingPage() {
                 <CardContent className="p-1">
                   <div className="rounded-lg overflow-hidden shadow-2xl">
                     <img
-                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?height=720&width=1280"
+                      src="/dashboard.png"
                       alt="Dashboard Preview"
                       className="w-full h-auto object-cover"
                       width={1280}
