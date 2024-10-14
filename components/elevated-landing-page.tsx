@@ -247,7 +247,7 @@ export default function LandingPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="italic">
-                    "Өте жақсы қызмет! Сатылымдарымды тез түсінуге көмектесті"
+                    Өте жақсы қызмет! Сатылымдарымды тез түсінуге көмектесті
                   </p>
                 </CardContent>
               </Card>
@@ -258,7 +258,7 @@ export default function LandingPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="italic">
-                    "Точный и понятный анализ. Облегчил мою работу. Рахмет!"
+                    Точный и понятный анализ. Облегчил мою работу. Рахмет!
                   </p>
                 </CardContent>
               </Card>
@@ -269,7 +269,7 @@ export default function LandingPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="italic">
-                    "Этот сервис поднял мой бизнес на новый уровень. Отлично!"
+                    Этот сервис поднял мой бизнес на новый уровень. Отлично!
                   </p>
                 </CardContent>
               </Card>
