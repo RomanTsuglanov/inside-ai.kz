@@ -346,7 +346,7 @@ export default function LandingPage() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
-                <AccordionTrigger>Могу ли я интегрировать это с моими существующими системами?</AccordionTrigger>
+                <AccordionTrigger>Могу ли я интегрировать c существующими системами?</AccordionTrigger>
                 <AccordionContent>
                 Наша платформа разработана для беспрепятственной интеграции с широким кругом существующих бизнес-систем и программного обеспечения. 
                 Мы предоставляем API и поддержку для пользовательских интеграций по мере необходимости.
