@@ -224,7 +224,7 @@ export default function LandingPage() {
                 <CardContent className="p-1">
                   <div className="rounded-lg overflow-hidden shadow-2xl">
                     <img
-                      src="/dashboard.png"
+                      src="C:\Users\c.roman\Desktop\my-app\app3\public\assets\analytics-dashboard.png"
                       alt="Dashboard Preview"
                       className="w-full h-auto object-cover"
                       width={1280}
@@ -346,7 +346,7 @@ export default function LandingPage() {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
-                <AccordionTrigger>Могу ли я интегрировать c существующими системами?</AccordionTrigger>
+                <AccordionTrigger>Есть ли интеграция?</AccordionTrigger>
                 <AccordionContent>
                 Наша платформа разработана для беспрепятственной интеграции с широким кругом существующих бизнес-систем и программного обеспечения. 
                 Мы предоставляем API и поддержку для пользовательских интеграций по мере необходимости.
