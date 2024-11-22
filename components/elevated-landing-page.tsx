@@ -6,6 +6,8 @@ import Link from "next/link"
 import { ArrowRight, BarChart2, Check, DollarSign, Moon, PieChart, Sun, TrendingUp, X } from "lucide-react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
+import Image from "next/image"
+import icon1 from "@/public/assets/sofa-analytics-icon---simple-style--minimalism-.png"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -126,11 +128,13 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link className="flex items-center justify-center" href="#">
             <motion.div
+            className="flex items-center "
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <PieChart className="h-8 w-8 text-primary" />
-              <span className="ml-2 font-bold text-xl">PFA.ai</span>
+              <Image src={icon1} alt="Inside.ai logo" className="h-6 w-6" />
+              
+              <span className="ml-2 font-bold text-xl">INSIDE.AI</span>
             </motion.div>
           </Link>
           <nav className="hidden md:flex gap-6">
@@ -227,19 +231,19 @@ export default function LandingPage() {
             <motion.div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  icon: <BarChart2 className="h-8 w-8 text-white" />,
+                  //icon: <BarChart2  className="h-8 w-8 text-white hover:text-gray-200" />,
                   title: "Анализ оборачиваемости",
                   description: "Получите глубокие данные о вашей продаже",
                   content: "Наш мощный аналитический движок обрабатывает ваши данные о продажах для выявления трендов, сезонных паттернов и возможностей роста."
                 },
                 {
-                  icon: <DollarSign className="h-8 w-8 text-white" />,
+                  //icon: <DollarSign className="h-8 w-8 text-white" />,
                   title: "Динамическая ценовая политика",
                   description: "Оптимизируйте свою ценовую стратегию в режиме реального времени",
                   content: "Наш AI-движок ценовой политики анализирует рыночные тренды и Ваши исторические данные для предложения оптимальных стратегий ценообразования."
                 },
                 {
-                  icon: <TrendingUp className="h-8 w-8 text-white" />,
+                  //icon: <TrendingUp className="h-8 w-8 text-white" />,
                   title: "Прогнозы рентабельности",
                   description: "Максимизируйте свою прибыль с помощью данных",
                   content: "Получите детальные данные о своей прибыли и выявите ключевые области для оптимизации затрат и роста доходов."
@@ -248,9 +252,7 @@ export default function LandingPage() {
                 <motion.div key={index} variants={scaleIn}>
                   <Card className="bg-card hover:bg-card/80 transition-all duration-300 transform hover:scale-105">
                     <CardHeader>
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-foreground flex items-center justify-center mb-4">
-                        {feature.icon}
-                      </div>
+                      
                       <CardTitle className="text-2xl mb-2">{feature.title}</CardTitle>
                       <CardDescription className="text-lg">
                         {feature.description}
@@ -271,7 +273,33 @@ export default function LandingPage() {
           </div>
         </motion.section>
 
-        <motion.section
+
+  
+          <motion.section
+            ref={analyticsRef}
+            initial="hidden"
+            animate={analyticsInView ? "visible" : "hidden"}
+            variants={fadeIn}
+            className="w-full py-16 md:py-24"
+            id="analytics"
+          >
+            <div className="container mx-auto px-4 md:px-6">
+              <motion.h2 
+                variants={fadeIn}
+                className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12"
+              >
+                Попробуйте наш аналитический инструмент
+              </motion.h2>
+              <motion.div
+                variants={scaleIn}
+                className="w-full"
+              >
+                <CSVAnalytics />
+              </motion.div>
+            </div>
+          </motion.section>
+
+          <motion.section
           ref={testimonialsRef}
           initial="hidden"
           animate={testimonialsInView ? "visible" : "hidden"}
@@ -314,30 +342,6 @@ export default function LandingPage() {
                   </motion.div>
                 ))}
               </div>
-            </div>
-          </motion.section>
-  
-          <motion.section
-            ref={analyticsRef}
-            initial="hidden"
-            animate={analyticsInView ? "visible" : "hidden"}
-            variants={fadeIn}
-            className="w-full py-16 md:py-24"
-            id="analytics"
-          >
-            <div className="container mx-auto px-4 md:px-6">
-              <motion.h2 
-                variants={fadeIn}
-                className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12"
-              >
-                Попробуйте наш аналитический инструмент
-              </motion.h2>
-              <motion.div
-                variants={scaleIn}
-                className="w-full"
-              >
-                <CSVAnalytics />
-              </motion.div>
             </div>
           </motion.section>
   
@@ -493,7 +497,7 @@ export default function LandingPage() {
                     Готовы трансформировать свой бизнес?
                   </h2>
                   <p className="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl">
-                    Начните сегодня и откройте для себя возможности принятия решений на основе данных.
+                    Начните сегодня и откройте для себя возможности принятия решени�� на основе данных.
                   </p>
                 </motion.div>
                 <motion.div
@@ -530,8 +534,8 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-between items-center">
             <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
               <Link href="/" className="flex items-center justify-center">
-                <PieChart className="h-6 w-6 text-primary" />
-                <span className="ml-2 font-bold">PFA.AI</span>
+                <Image src={icon1} alt="Inside.ai logo" className="h-6 w-6" />
+                <span className="ml-2 font-bold">Inside.ai</span>
               </Link>
               <p className="mt-2 text-sm text-muted-foreground">
                 © 2024 Professional Furniture Analytics. All rights reserved.
@@ -561,9 +565,9 @@ export default function LandingPage() {
               transition={{ duration: 0.3 }}
             >
               <DialogHeader>
-                <DialogTitle>Начните свой путь с PFA.AI</DialogTitle>
+                <DialogTitle>Начните свой путь с INSIDE.AI</DialogTitle>
                 <DialogDescription>
-                  Заполните эту форму, чтобы начать свой путь с PFA.AI.
+                  Заполните эту форму, чтобы начать свой путь с INSIDE.AI.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -574,7 +578,7 @@ export default function LandingPage() {
                   frameBorder={0}
                   marginHeight={0}
                   marginWidth={0}
-                  title="PFA.AI Contact Form"
+                  title="INSIDE.AI Contact Form"
                 />
               </div>
             </motion.div>
