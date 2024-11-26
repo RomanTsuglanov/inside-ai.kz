@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, DollarSign, ShoppingCart, Percent } from 'lucide-react';
+import { TrendingUp, DollarSign, ShoppingCart, Percent, LucideIcon } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -15,7 +15,8 @@ import {
   Pie,
   Cell,
   AreaChart,
-  Area
+  Area,
+  TooltipProps
 } from 'recharts';
 
 // Types
@@ -36,7 +37,7 @@ interface ProductData {
 interface CustomCardProps {
   title: string;
   value: string;
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
   trend?: boolean;
   trendValue?: number;
   className?: string;
@@ -45,6 +46,15 @@ interface CustomCardProps {
 interface TabNames {
   [key: string]: string;
 }
+
+// For Recharts types
+interface CustomTooltipPayload {
+  name: string;
+  value: number;
+  payload: ProductData;
+}
+
+type TooltipFormatterResult = [string, string | undefined];
 
 // Constants
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -86,7 +96,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
         <p className="text-sm font-medium text-gray-600">{title}</p>
         <h3 className="text-2xl font-bold mt-1">{value}</h3>
       </div>
-      {Icon && <Icon className="w-8 h-8 text-blue-500" />}
+      <Icon className="w-8 h-8 text-blue-500" />
     </div>
     {trend && (
       <div className={`text-xs mt-2 ${trendValue >= 0 ? 'text-green-500' : 'text-red-500'}`}>
@@ -104,6 +114,20 @@ const SalesAnalyticsDashboard: React.FC = () => {
   const avgProfit = monthlyData.reduce((sum, item) => sum + item.profit, 0) / monthlyData.length;
   const avgTurnover = monthlyData.reduce((sum, item) => sum + item.turnover, 0) / monthlyData.length;
   const avgDiscount = monthlyData.reduce((sum, item) => sum + item.discount, 0) / monthlyData.length;
+
+  // Tooltip formatters
+  const tooltipProductFormatter = (
+    value: number,
+    name: string,
+    props: { payload: CustomTooltipPayload }
+  ): TooltipFormatterResult => {
+    const fullName = productData.find(item => item.name === props.payload.name)?.fullName;
+    return [`${value.toLocaleString()}`, fullName];
+  };
+
+  const legendFormatter = (value: string): string => {
+    return productData.find(item => item.name === value)?.fullName ?? value;
+  };
 
   return (
     <div className="w-full p-4 space-y-4 bg-gray-50 min-h-screen">
@@ -266,14 +290,8 @@ const SalesAnalyticsDashboard: React.FC = () => {
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip 
-                        formatter={(value: number, name: string, props: any) => 
-                          [`${value.toLocaleString()}`, productData.find(item => item.name === props.payload.name)?.fullName]
-                        } 
-                      />
-                      <Legend 
-                        formatter={(value: string) => productData.find(item => item.name === value)?.fullName} 
-                      />
+                      <Tooltip formatter={tooltipProductFormatter} />
+                      <Legend formatter={legendFormatter} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -289,14 +307,9 @@ const SalesAnalyticsDashboard: React.FC = () => {
                       <YAxis 
                         dataKey="name" 
                         type="category"
-                        tickFormatter={(value: string) => value}
                       />
-                      <Tooltip 
-                        formatter={(value: number, name: string, props: any) => 
-                          [`${value.toLocaleString()}`, productData.find(item => item.name === props.payload.name)?.fullName]
-                        }
-                      />
-                      <Legend />
+                      <Tooltip formatter={tooltipProductFormatter} />
+                      <Legend formatter={legendFormatter} />
                       <Bar dataKey="value" fill="#8884d8" name="Объём продаж" />
                     </BarChart>
                   </ResponsiveContainer>
