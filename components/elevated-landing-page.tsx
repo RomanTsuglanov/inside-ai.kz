@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import RetroGrid from "@/components/ui/retro-grid";
 import Link from "next/link"
-import { ArrowRight, BarChart2, Check, DollarSign, Moon, PieChart, Sun, TrendingUp, X } from "lucide-react"
+import { ArrowRight, Check, Moon, Sun, X } from "lucide-react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import Image from "next/image"
