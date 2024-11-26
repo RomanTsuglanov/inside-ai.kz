@@ -15,8 +15,7 @@ import {
   Pie,
   Cell,
   AreaChart,
-  Area,
-  TooltipProps
+  Area
 } from 'recharts';
 
 // Types
