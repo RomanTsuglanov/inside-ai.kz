@@ -18,8 +18,38 @@ import {
   Area
 } from 'recharts';
 
-// Тестовые данные
-const monthlyData = [
+// Types
+interface MonthlyData {
+  month: string;
+  sales: number;
+  profit: number;
+  turnover: number;
+  discount: number;
+}
+
+interface ProductData {
+  name: string;
+  value: number;
+  fullName: string;
+}
+
+interface CustomCardProps {
+  title: string;
+  value: string;
+  icon: React.ComponentType<any>;
+  trend?: boolean;
+  trendValue?: number;
+  className?: string;
+}
+
+interface TabNames {
+  [key: string]: string;
+}
+
+// Constants
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+const monthlyData: MonthlyData[] = [
   { month: 'Янв', sales: 4000, profit: 2400, turnover: 7, discount: 5 },
   { month: 'Фев', sales: 3000, profit: 1398, turnover: 6.8, discount: 4 },
   { month: 'Март', sales: 2000, profit: 9800, turnover: 7.2, discount: 3 },
@@ -29,16 +59,27 @@ const monthlyData = [
   { month: 'Июль', sales: 3490, profit: 4300, turnover: 6.9, discount: 7 },
 ];
 
-const productData = [
+const productData: ProductData[] = [
   { name: 'A', value: 400, fullName: 'Модель A' },
   { name: 'Б', value: 300, fullName: 'Модель Б' },
   { name: 'В', value: 300, fullName: 'Модель В' },
   { name: 'Г', value: 200, fullName: 'Модель Г' },
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const tabNames: TabNames = {
+  overview: 'Обзор',
+  sales: 'Продажи',
+  products: 'Товары'
+};
 
-const CustomCard = ({ title, value, icon: Icon, trend, trendValue, className = "" }) => (
+const CustomCard: React.FC<CustomCardProps> = ({ 
+  title, 
+  value, 
+  icon: Icon, 
+  trend, 
+  trendValue = 0, 
+  className = "" 
+}) => (
   <div className={`bg-white rounded-lg shadow p-6 ${className}`}>
     <div className="flex items-center justify-between">
       <div>
@@ -55,24 +96,18 @@ const CustomCard = ({ title, value, icon: Icon, trend, trendValue, className = "
   </div>
 );
 
-const SalesAnalyticsDashboard = () => {
-  const [activeTab, setActiveTab] = useState('overview');
+const SalesAnalyticsDashboard: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'overview' | 'sales' | 'products'>('overview');
 
-  // Расчет итоговых метрик
+  // Calculate metrics
   const totalSales = monthlyData.reduce((sum, item) => sum + item.sales, 0);
   const avgProfit = monthlyData.reduce((sum, item) => sum + item.profit, 0) / monthlyData.length;
   const avgTurnover = monthlyData.reduce((sum, item) => sum + item.turnover, 0) / monthlyData.length;
   const avgDiscount = monthlyData.reduce((sum, item) => sum + item.discount, 0) / monthlyData.length;
 
-  const tabNames = {
-    overview: 'Обзор',
-    sales: 'Продажи',
-    products: 'Товары'
-  };
-
   return (
     <div className="w-full p-4 space-y-4 bg-gray-50 min-h-screen">
-      {/* Информационные карточки */}
+      {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <CustomCard
           title="Общие продажи"
@@ -104,14 +139,14 @@ const SalesAnalyticsDashboard = () => {
         />
       </div>
 
-      {/* Вкладки */}
+      {/* Tabs */}
       <div className="bg-white rounded-lg shadow p-4">
         <div className="border-b border-gray-200">
-          <nav className="flex space-x-4" aria-label="Вкладки">
+          <nav className="flex space-x-4" aria-label="Tabs">
             {Object.entries(tabNames).map(([key, label]) => (
               <button
                 key={key}
-                onClick={() => setActiveTab(key)}
+                onClick={() => setActiveTab(key as 'overview' | 'sales' | 'products')}
                 className={`
                   px-3 py-2 text-sm font-medium rounded-md
                   ${activeTab === key
@@ -125,19 +160,19 @@ const SalesAnalyticsDashboard = () => {
           </nav>
         </div>
 
-        {/* Содержимое вкладок */}
+        {/* Tab Content */}
         <div className="mt-4">
           {activeTab === 'overview' && (
             <div className="bg-white rounded-lg p-4">
               <h3 className="text-lg font-medium mb-4">Тренды продаж и прибыли</h3>
-              <div className="h-[400px]">
+              <div className="h-96">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={monthlyData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis yAxisId="left" />
                     <YAxis yAxisId="right" orientation="right" />
-                    <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+                    <Tooltip formatter={(value: number) => value.toLocaleString()} />
                     <Legend />
                     <Line 
                       yAxisId="left" 
@@ -163,13 +198,13 @@ const SalesAnalyticsDashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
                 <h3 className="text-lg font-medium mb-4">Распределение продаж</h3>
-                <div className="h-[300px]">
+                <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={monthlyData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
                       <YAxis />
-                      <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+                      <Tooltip formatter={(value: number) => value.toLocaleString()} />
                       <Legend />
                       <Bar dataKey="sales" fill="#8884d8" name="Продажи" />
                     </BarChart>
@@ -179,7 +214,7 @@ const SalesAnalyticsDashboard = () => {
 
               <div className="bg-white rounded-lg p-4">
                 <h3 className="text-lg font-medium mb-4">Оборот и скидки</h3>
-                <div className="h-[300px]">
+                <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={monthlyData}>
                       <CartesianGrid strokeDasharray="3 3" />
@@ -209,11 +244,12 @@ const SalesAnalyticsDashboard = () => {
               </div>
             </div>
           )}
+
           {activeTab === 'products' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4">
                 <h3 className="text-lg font-medium mb-4">Распределение продаж</h3>
-                <div className="h-[300px]">
+                <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -221,22 +257,22 @@ const SalesAnalyticsDashboard = () => {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, value }) => `${name}: ${value}`}
+                        label={({ name, value }: ProductData) => `${name}: ${value}`}
                         outerRadius={100}
                         fill="#8884d8"
                         dataKey="value"
                       >
-                        {productData.map((entry, index) => (
+                        {productData.map((_, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip 
-                        formatter={(value, name, props) => 
+                        formatter={(value: number, name: string, props: any) => 
                           [`${value.toLocaleString()}`, productData.find(item => item.name === props.payload.name)?.fullName]
                         } 
                       />
                       <Legend 
-                        formatter={(value) => productData.find(item => item.name === value)?.fullName} 
+                        formatter={(value: string) => productData.find(item => item.name === value)?.fullName} 
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -245,7 +281,7 @@ const SalesAnalyticsDashboard = () => {
 
               <div className="bg-white rounded-lg p-4">
                 <h3 className="text-lg font-medium mb-4">Эффективность</h3>
-                <div className="h-[300px]">
+                <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={productData} layout="vertical">
                       <CartesianGrid strokeDasharray="3 3" />
@@ -253,10 +289,10 @@ const SalesAnalyticsDashboard = () => {
                       <YAxis 
                         dataKey="name" 
                         type="category"
-                        tickFormatter={(value) => value}
+                        tickFormatter={(value: string) => value}
                       />
                       <Tooltip 
-                        formatter={(value, name, props) => 
+                        formatter={(value: number, name: string, props: any) => 
                           [`${value.toLocaleString()}`, productData.find(item => item.name === props.payload.name)?.fullName]
                         }
                       />
