@@ -46,15 +46,6 @@ interface TabNames {
   [key: string]: string;
 }
 
-// For Recharts types
-interface CustomTooltipPayload {
-  name: string;
-  value: number;
-  payload: ProductData;
-}
-
-type TooltipFormatterResult = [string, string | undefined];
-
 // Constants
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -115,13 +106,13 @@ const SalesAnalyticsDashboard: React.FC = () => {
   const avgDiscount = monthlyData.reduce((sum, item) => sum + item.discount, 0) / monthlyData.length;
 
   // Tooltip formatters
-  const tooltipProductFormatter = (
-    value: number,
-    name: string,
-    props: { payload: CustomTooltipPayload }
-  ): TooltipFormatterResult => {
-    const fullName = productData.find(item => item.name === props.payload.name)?.fullName;
-    return [`${value.toLocaleString()}`, fullName];
+  const tooltipProductFormatter = (value: number) => {
+    return value.toLocaleString();
+  };
+
+  const pieChartTooltipFormatter = (value: number, name: string) => {
+    const fullName = productData.find(item => item.name === name)?.fullName;
+    return [value.toLocaleString(), fullName];
   };
 
   const legendFormatter = (value: string): string => {
@@ -195,7 +186,7 @@ const SalesAnalyticsDashboard: React.FC = () => {
                     <XAxis dataKey="month" />
                     <YAxis yAxisId="left" />
                     <YAxis yAxisId="right" orientation="right" />
-                    <Tooltip formatter={(value: number) => value.toLocaleString()} />
+                    <Tooltip formatter={tooltipProductFormatter} />
                     <Legend />
                     <Line 
                       yAxisId="left" 
@@ -227,7 +218,7 @@ const SalesAnalyticsDashboard: React.FC = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
                       <YAxis />
-                      <Tooltip formatter={(value: number) => value.toLocaleString()} />
+                      <Tooltip formatter={tooltipProductFormatter} />
                       <Legend />
                       <Bar dataKey="sales" fill="#8884d8" name="Продажи" />
                     </BarChart>
@@ -243,7 +234,7 @@ const SalesAnalyticsDashboard: React.FC = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
                       <YAxis />
-                      <Tooltip />
+                      <Tooltip formatter={tooltipProductFormatter} />
                       <Legend />
                       <Area 
                         type="monotone" 
@@ -289,7 +280,7 @@ const SalesAnalyticsDashboard: React.FC = () => {
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={tooltipProductFormatter} />
+                      <Tooltip formatter={pieChartTooltipFormatter} />
                       <Legend formatter={legendFormatter} />
                     </PieChart>
                   </ResponsiveContainer>
@@ -307,7 +298,7 @@ const SalesAnalyticsDashboard: React.FC = () => {
                         dataKey="name" 
                         type="category"
                       />
-                      <Tooltip formatter={tooltipProductFormatter} />
+                      <Tooltip formatter={pieChartTooltipFormatter} />
                       <Legend formatter={legendFormatter} />
                       <Bar dataKey="value" fill="#8884d8" name="Объём продаж" />
                     </BarChart>
