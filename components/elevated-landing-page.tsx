@@ -58,7 +58,7 @@ const scaleIn = {
 }
 
 export default function LandingPage() {
-  const [darkMode, setDarkMode] = useState(false)
+
   const [scrolled, setScrolled] = useState(false)
   const [yearlyBilling, setYearlyBilling] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -124,7 +124,7 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className={`flex flex-col min-h-screen ${darkMode ? "dark" : ""}`}>
+    <div className={`flex flex-col min-h-screen`}>
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -169,7 +169,7 @@ export default function LandingPage() {
                 
                 className="text-gray-700 dark:text-gray-300"
               >
-                {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                {<Sun className="h-5 w-5" />}
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }}>
