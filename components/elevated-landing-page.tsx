@@ -40,6 +40,14 @@ const staggerContainer = {
   }
 }
 
+const navItems = [
+  { id: "features", name: "Что мы предлагаем" },
+  { id: "analytics", name: "Аналитика" },
+  { id: "reviews", name: "Отзывы" },
+  { id: "pricing", name: "Цены" },
+  { id: "faq", name: "FAQ" },
+];
+
 const scaleIn = {
   hidden: { scale: 0.8, opacity: 0 },
   visible: {
@@ -138,27 +146,27 @@ export default function LandingPage() {
             </motion.div>
           </Link>
           <nav className="hidden md:flex gap-6">
-            {["Что мы предлагаем", "Аналитика", "Отзывы", "Цены", "FAQ"].map((item) => (
-              <motion.div
-                key={item}
-                whileHover={{ y: -2 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Link
-                  className="text-sm font-medium hover:text-primary transition-colors"
-                  href={`#${item.toLowerCase()}`}
-                >
-                  {item}
-                </Link>
-              </motion.div>
-            ))}
-          </nav>
+  {navItems.map(({ id, name }) => (
+    <motion.div
+      key={id}
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+    >
+      <Link
+        className="text-sm font-medium hover:text-primary transition-colors"
+        href={`#${id}`}
+      >
+        {name}
+      </Link>
+    </motion.div>
+  ))}
+</nav>
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.1 }}>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setDarkMode(!darkMode)}
+                
                 className="text-gray-700 dark:text-gray-300"
               >
                 {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -308,7 +316,7 @@ export default function LandingPage() {
           id="testimonials"
         >
           <div className="container mx-auto px-4 md:px-6">
-            <motion.h2 variants={fadeIn} className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
+            <motion.h2 variants={fadeIn} id="reviews" className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
               Что говорят наши клиенты
             </motion.h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
